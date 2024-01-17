@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+</head>
+<body>
+    <h1>WILDBERRIES order checker</h1>
+    <form name="orders_form" action="" method="GET">
+        <label for="order_uid">OrderUID</label><br>
+        <input type="text" id="order_uid" name="uid"><br>
+        <input type="button" value="Find" onclick="findOrder(this.form)">
+    </form>
+    <h1>Information about your order</h1>
+    <p id="order_information">
+
+    </p>
+    <script>
+        function findOrder(form) {
+            const order_uid = form.uid.value;
+            fetch(`v1/api/order/${order_uid}`,
+                {
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                },
+            ).then(response=>{
+                if (response.ok) {
+                    response.json().then(json => {
+                        document.getElementById("order_information").innerText = JSON.stringify(json)
+                    })
+                } else {
+                    document.getElementById("order_information").innerText = "No such Order, sorry"
+                }
+            })
+        }
+    </script>
+</body>
+</html>
